@@ -5,7 +5,7 @@ import { SplitText } from "@/components/site/split-text";
 import { Reveal } from "@/components/site/reveal";
 import { ParallaxImage } from "@/components/site/parallax-image";
 import { TiltCard } from "@/components/site/tilt-card";
-import { SERVICES, PROJECTS } from "@/lib/site-data";
+import { SERVICES, PROJECTS, type Service } from "@/lib/site-data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/services/$slug")({
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/services/$slug")({
 });
 
 function ServiceDetail() {
-  const { service } = Route.useLoaderData();
+  const { service } = Route.useLoaderData() as { service: Service };
   return (
     <>
       <section className="relative pt-32 md:pt-40 pb-16">

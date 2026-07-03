@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/site/site-shell";
 import { SplitText } from "@/components/site/split-text";
 import { Reveal } from "@/components/site/reveal";
 import { ParallaxImage } from "@/components/site/parallax-image";
-import { PROJECTS, IMAGES } from "@/lib/site-data";
+import { PROJECTS, IMAGES, type Project } from "@/lib/site-data";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -71,7 +71,7 @@ function BeforeAfter({ before, after }: { before: string; after: string }) {
 }
 
 function ProjectDetail() {
-  const { project } = Route.useLoaderData();
+  const { project } = Route.useLoaderData() as { project: Project };
   const idx = PROJECTS.findIndex((p) => p.slug === project.slug);
   const next = PROJECTS[(idx + 1) % PROJECTS.length];
   return (

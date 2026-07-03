@@ -88,8 +88,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#0b1533" },
       { name: "twitter:title", content: "Studio Dyota — Architecture, Interior, Construction & Consultancy" },
       { name: "twitter:description", content: "Studio Dyota creates timeless architecture, elegant interiors, quality construction and expert consultancy for residential and commercial spaces across India." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3e97f0c3-d6c5-4717-a90e-e30799c98e32" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/3e97f0c3-d6c5-4717-a90e-e30799c98e32" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a6993f37-052d-41b9-aefe-e665438d1341" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a6993f37-052d-41b9-aefe-e665438d1341" },
     ],
     links: [
       {

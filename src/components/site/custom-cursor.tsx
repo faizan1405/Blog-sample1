@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -12,7 +13,7 @@ export function CustomCursor() {
     if (isTouch) return;
     document.documentElement.classList.add("has-custom-cursor");
 
-    const state = { x: window.innerWidth / 2, y: window.innerHeight / 2, rx: 0, ry: 0 };
+    const state = { x: window.innerWidth / 2, y: window.innerHeight / 2, rx: 0, ry: 0, gx: 0, gy: 0 };
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
@@ -24,10 +25,17 @@ export function CustomCursor() {
       }
     };
     const loop = () => {
-      state.rx += (state.x - state.rx) * 0.14;
-      state.ry += (state.y - state.ry) * 0.14;
+      const follow = hovering ? 0.18 : 0.12;
+      state.rx += (state.x - state.rx) * follow;
+      state.ry += (state.y - state.ry) * follow;
+      state.gx += (state.x - state.gx) * 0.08;
+      state.gy += (state.y - state.gy) * 0.08;
+
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${state.rx}px, ${state.ry}px, 0) translate(-50%, -50%) scale(${hovering ? 2.2 : 1})`;
+        ringRef.current.style.transform = `translate3d(${state.rx}px, ${state.ry}px, 0) translate(-50%, -50%) scale(${hovering ? 1.6 : 1})`;
+      }
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate3d(${state.gx}px, ${state.gy}px, 0) translate(-50%, -50%) scale(${hovering ? 1.5 : 1})`;
       }
       raf = requestAnimationFrame(loop);
     };
@@ -56,8 +64,30 @@ export function CustomCursor() {
     };
   }, [hovering, visible]);
 
+  const scale = hovering ? 1.5 : 1;
+
   return (
     <>
+      {/* Outer soft glow halo */}
+      <div
+        ref={glowRef}
+        aria-hidden
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 48,
+          height: 48,
+          borderRadius: 999,
+          pointerEvents: "none",
+          zIndex: 9998,
+          opacity: visible ? (hovering ? 0.35 : 0.22) : 0,
+          background: "radial-gradient(circle, oklch(0.62 0.14 240 / 0.45) 0%, oklch(0.62 0.14 240 / 0) 70%)",
+          transition: "opacity 300ms ease",
+          willChange: "transform",
+        }}
+      />
+      {/* Ring */}
       <div
         ref={ringRef}
         aria-hidden
@@ -65,18 +95,22 @@ export function CustomCursor() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: 34,
-          height: 34,
-          border: "1px solid oklch(0.18 0.06 255)",
+          width: 32,
+          height: 32,
+          border: "2px solid oklch(0.62 0.14 240 / 0.85)",
           borderRadius: 999,
           pointerEvents: "none",
           zIndex: 9999,
-          mixBlendMode: "difference",
-          transition: "opacity 200ms ease, background 200ms ease, border-color 200ms ease",
           opacity: visible ? 0.9 : 0,
-          backgroundColor: hovering ? "oklch(0.62 0.14 240 / 0.15)" : "transparent",
+          backgroundColor: hovering ? "oklch(0.62 0.14 240 / 0.12)" : "transparent",
+          boxShadow: hovering
+            ? "0 0 18px oklch(0.62 0.14 240 / 0.55), 0 0 40px oklch(0.62 0.14 240 / 0.25)"
+            : "0 0 12px oklch(0.62 0.14 240 / 0.35), 0 0 28px oklch(0.62 0.14 240 / 0.15)",
+          transition: "opacity 200ms ease, background-color 300ms ease, box-shadow 300ms ease",
+          willChange: "transform",
         }}
       />
+      {/* Core dot */}
       <div
         ref={dotRef}
         aria-hidden
@@ -84,15 +118,19 @@ export function CustomCursor() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: 6,
-          height: 6,
-          background: "oklch(0.18 0.06 255)",
+          width: 10,
+          height: 10,
+          background: "oklch(0.985 0.005 240)",
           borderRadius: 999,
           pointerEvents: "none",
           zIndex: 10000,
-          mixBlendMode: "difference",
           opacity: visible ? 1 : 0,
-          transition: "opacity 200ms ease",
+          boxShadow: hovering
+            ? `0 0 10px oklch(0.62 0.14 240 / 0.9), 0 0 24px oklch(0.62 0.14 240 / 0.6), 0 0 0 ${scale * 14}px oklch(0.62 0.14 240 / 0.15)`
+            : "0 0 8px oklch(0.62 0.14 240 / 0.7), 0 0 18px oklch(0.62 0.14 240 / 0.4)",
+          transition: "opacity 200ms ease, box-shadow 300ms ease",
+          transform: `scale(${scale})`,
+          willChange: "transform",
         }}
       />
     </>

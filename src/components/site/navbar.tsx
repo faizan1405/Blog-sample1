@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import logoAsset from "@/assets/logo.asset.json";
 import { NAV_LINKS } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +35,7 @@ export function Navbar() {
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 lg:px-10">
           <Link to="/" className="flex items-center gap-3 group" aria-label="Studio Dyota home">
             <img
-              src={logoAsset.url}
+              src="/favicon.png"
               alt=""
               width={40}
               height={40}

@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import logoAsset from "@/assets/logo.asset.json";
 import { CONTACT, SERVICES } from "@/lib/site-data";
 import { SplitText } from "./split-text";
 
@@ -31,7 +30,7 @@ export function Footer() {
         <div className="mt-24 grid gap-12 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-3">
-              <img src={logoAsset.url} alt="" className="h-9 w-9 object-contain" />
+              <img src="/favicon.png" alt="" className="h-9 w-9 object-contain" />
               <div>
                 <div className="font-display text-lg">Studio Dyota</div>
                 <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/50">Since 2013</div>
